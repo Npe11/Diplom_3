@@ -1,5 +1,7 @@
+import com.github.javafaker.Faker;
 import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import models.CourierModel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,21 +11,29 @@ import pages.HomePage;
 import pages.LoginPage;
 import pages.ProfilePage;
 import clients.UserClient;
+
 import java.time.Duration;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertTrue;
 
 public class NavigationFromProfileTest extends BaseTest {
 
+    private Faker faker;
     private String email;
-    private final String password = "password123";
-    private final String name = "TestUser";
+    private String password;
+    private String name;
     private String accessToken;
     private UserClient userClient = new UserClient();
 
     @Before
     public void setUpUser() {
-        email = "testuser" + System.currentTimeMillis() + "@example.com";
-        Response response = userClient.createUser(email, password, name);
+        faker = new Faker();
+        email = faker.internet().emailAddress();
+        password = faker.internet().password();
+        name = faker.name().fullName();
+
+        CourierModel courier = new CourierModel(email, password, name);
+        Response response = userClient.createUser(courier);
         accessToken = response.jsonPath().getString("accessToken");
 
         driver.get("https://stellarburgers.nomoreparties.site/login");
@@ -32,13 +42,12 @@ public class NavigationFromProfileTest extends BaseTest {
         loginPage.enterPassword(password);
         loginPage.clickLogin();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.urlToBe("https://stellarburgers.nomoreparties.site/"));
-
         HomePage home = new HomePage(driver);
+        home.waitUntilPageUrlLoads();
         home.clickAccountLink();
 
-        wait.until(ExpectedConditions.urlToBe("https://stellarburgers.nomoreparties.site/account/profile"));
+        ProfilePage profile = new ProfilePage(driver);
+        profile.waitUntilPageUrlLoads();
     }
 
     @After
@@ -54,10 +63,9 @@ public class NavigationFromProfileTest extends BaseTest {
         ProfilePage profilePage = new ProfilePage(driver);
         profilePage.clickConstructorButton();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.urlToBe("https://stellarburgers.nomoreparties.site/"));
-
         HomePage home = new HomePage(driver);
+        home.waitUntilPageUrlLoads();
+
         assertTrue("На главной странице должен отображаться текст 'Соберите бургер'",
                 home.isBurgerAssemblyTextDisplayed());
         assertTrue("На главной странице должна отображаться кнопка 'Оформить заказ'",
@@ -70,10 +78,9 @@ public class NavigationFromProfileTest extends BaseTest {
         ProfilePage profilePage = new ProfilePage(driver);
         profilePage.clickLogo();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.urlToBe("https://stellarburgers.nomoreparties.site/"));
-
         HomePage home = new HomePage(driver);
+        home.waitUntilPageUrlLoads();
+
         assertTrue("На главной странице должен отображаться текст 'Соберите бургер'",
                 home.isBurgerAssemblyTextDisplayed());
         assertTrue("На главной странице должна отображаться кнопка 'Оформить заказ'",

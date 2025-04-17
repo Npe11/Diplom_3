@@ -101,4 +101,12 @@ public class HomePage {
     public boolean isFillingsTabActive() {
         return driver.findElement(fillingsTab).getAttribute("class").contains(activeTabClass);
     }
+
+    public void waitUntilPageUrlLoads() {
+        wait.until(ExpectedConditions.urlToBe("https://stellarburgers.nomoreparties.site/"));
+    }
+
+    public void waitUntilBunsTabClickable() {
+        wait.until(ExpectedConditions.elementToBeClickable(bunsTab));
+    }
 }

@@ -1,33 +1,38 @@
+import com.github.javafaker.Faker;
 import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import models.CourierModel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.LoginPage;
 import pages.RegistrationPage;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
-import java.time.Duration;
 import clients.UserClient;
 
 public class RegistrationTest extends BaseTest {
 
+    private Faker faker;
     private String email;
-    private final String password = "password123";
-    private final String name = "TestUser";
+    private String password;
+    private String name;
     private UserClient userClient = new UserClient();
 
     @Before
     public void setUpTest() {
-        email = "testuser" + System.currentTimeMillis() + "@example.com";
+        faker = new Faker();
+        email = faker.internet().emailAddress();
+        password = faker.internet().password(6, 12);
+        name = faker.name().fullName();
         driver.get("https://stellarburgers.nomoreparties.site/register");
     }
 
     @After
     public void tearDownTest() {
         if (email != null) {
-            Response loginResponse = userClient.loginUser(email, password);
+            CourierModel courier = new CourierModel(email, password, null);
+            Response loginResponse = userClient.loginUser(courier);
             String token = loginResponse.jsonPath().getString("accessToken");
             if (token != null && !token.isEmpty()) {
                 userClient.deleteUser(token);
@@ -44,11 +49,12 @@ public class RegistrationTest extends BaseTest {
         regPage.enterPassword(password);
         regPage.clickRegister();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.urlContains("/login"));
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.waitUntilPageUrlLoads();
 
         String currentUrl = driver.getCurrentUrl();
-        assertTrue("После успешной регистрации должен произойти переход на страницу логина", currentUrl.contains("/login"));
+        assertTrue("После успешной регистрации должен произойти переход на страницу логина",
+                currentUrl.contains("/login"));
     }
 
     @Test
@@ -60,9 +66,6 @@ public class RegistrationTest extends BaseTest {
         String invalidPassword = "12345"; // меньше 6 символов
         regPage.enterPassword(invalidPassword);
         regPage.clickRegister();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(regPage.getErrorMessageLocator()));
 
         assertEquals("Некорректный пароль", regPage.getErrorMessage());
     }

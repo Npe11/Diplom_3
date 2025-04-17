@@ -3,9 +3,14 @@ package pages;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class LoginPage {
     private WebDriver driver;
+    private WebDriverWait wait;
 
     private By emailField = By.xpath("//input[@type='text' and contains(@class, 'input__textfield')]");
     private By passwordField = By.xpath("//input[@type='password' and contains(@class, 'input__textfield')]");
@@ -13,6 +18,7 @@ public class LoginPage {
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
 
     @Step("Ввод email: {0}")
@@ -35,5 +41,9 @@ public class LoginPage {
     @Step("Проверка отображения кнопки 'Войти'")
     public boolean isLoginButtonDisplayed() {
         return driver.findElement(loginButton).isDisplayed();
+    }
+
+    public void waitUntilPageUrlLoads() {
+        wait.until(ExpectedConditions.urlToBe("https://stellarburgers.nomoreparties.site/login"));
     }
 }
