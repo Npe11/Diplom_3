@@ -10,6 +10,7 @@ import pages.RegistrationPage;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import clients.UserClient;
+import utils.Endpoints;
 
 public class RegistrationTest extends BaseTest {
 
@@ -25,7 +26,7 @@ public class RegistrationTest extends BaseTest {
         email = faker.internet().emailAddress();
         password = faker.internet().password(6, 12);
         name = faker.name().fullName();
-        driver.get("https://stellarburgers.nomoreparties.site/register");
+        driver.get(Endpoints.REGISTER_PAGE);
     }
 
     @After

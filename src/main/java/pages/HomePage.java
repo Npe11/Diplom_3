@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebDriver;
 import java.time.Duration;
+import utils.Endpoints;
 
 public class HomePage {
     private WebDriver driver;
@@ -103,7 +104,7 @@ public class HomePage {
     }
 
     public void waitUntilPageUrlLoads() {
-        wait.until(ExpectedConditions.urlToBe("https://stellarburgers.nomoreparties.site/"));
+        wait.until(ExpectedConditions.urlToBe(Endpoints.MAIN_PAGE));
     }
 
     public void waitUntilBunsTabClickable() {

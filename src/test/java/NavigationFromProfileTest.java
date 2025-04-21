@@ -5,14 +5,11 @@ import models.CourierModel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.HomePage;
 import pages.LoginPage;
 import pages.ProfilePage;
 import clients.UserClient;
-
-import java.time.Duration;
+import utils.Endpoints;
 
 import static org.junit.Assert.assertTrue;
 
@@ -36,7 +33,7 @@ public class NavigationFromProfileTest extends BaseTest {
         Response response = userClient.createUser(courier);
         accessToken = response.jsonPath().getString("accessToken");
 
-        driver.get("https://stellarburgers.nomoreparties.site/login");
+        driver.get(Endpoints.LOGIN_PAGE);
         LoginPage loginPage = new LoginPage(driver);
         loginPage.enterEmail(email);
         loginPage.enterPassword(password);

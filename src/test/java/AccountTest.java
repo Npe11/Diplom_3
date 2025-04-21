@@ -9,6 +9,7 @@ import pages.HomePage;
 import pages.LoginPage;
 import pages.ProfilePage;
 import clients.UserClient;
+import utils.Endpoints;
 
 import static org.junit.Assert.*;
 
@@ -42,7 +43,7 @@ public class AccountTest extends BaseTest {
     @Test
     @Description("Проверка перехода в личный кабинет: после входа через форму логина и клика на 'Личный кабинет' открывается страница профиля с информацией")
     public void testNavigateToProfile() {
-        driver.get("https://stellarburgers.nomoreparties.site/login");
+        driver.get(Endpoints.LOGIN_PAGE);
         LoginPage loginPage = new LoginPage(driver);
         loginPage.enterEmail(email);
         loginPage.enterPassword(password);
@@ -56,7 +57,7 @@ public class AccountTest extends BaseTest {
         profilePage.waitUntilPageUrlLoads();
 
         assertEquals("После клика на 'Личный кабинет' ожидается открытие профиля",
-                "https://stellarburgers.nomoreparties.site/account/profile",
+                Endpoints.ACCOUNT_PROFILE,
                 driver.getCurrentUrl());
 
         String profileInfo = profilePage.getProfileInfoText();

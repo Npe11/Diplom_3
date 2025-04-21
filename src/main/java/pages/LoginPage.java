@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.Endpoints;
 
 import java.time.Duration;
 
@@ -44,6 +45,6 @@ public class LoginPage {
     }
 
     public void waitUntilPageUrlLoads() {
-        wait.until(ExpectedConditions.urlToBe("https://stellarburgers.nomoreparties.site/login"));
+        wait.until(ExpectedConditions.urlToBe(Endpoints.LOGIN_PAGE));
     }
 }

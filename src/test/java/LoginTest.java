@@ -10,6 +10,7 @@ import pages.LoginPage;
 import pages.RegistrationPage;
 import pages.ForgotPasswordPage;
 import static org.junit.Assert.*;
+import utils.Endpoints;
 
 import clients.UserClient;
 
@@ -47,7 +48,7 @@ public class LoginTest extends BaseTest {
     @Test
     @Description("Вход через кнопку 'Войти в аккаунт' на главной странице")
     public void testLoginFromMainPageButton() {
-        driver.get("https://stellarburgers.nomoreparties.site/");
+        driver.get(Endpoints.MAIN_PAGE);
         HomePage home = new HomePage(driver);
         home.clickLoginButton();
 
@@ -68,7 +69,7 @@ public class LoginTest extends BaseTest {
     @Test
     @Description("Вход через ссылку 'Личный Кабинет' на главной странице")
     public void testLoginFromAccountLink() {
-        driver.get("https://stellarburgers.nomoreparties.site/");
+        driver.get(Endpoints.MAIN_PAGE);
         HomePage home = new HomePage(driver);
         home.clickAccountLink();
 
@@ -89,7 +90,7 @@ public class LoginTest extends BaseTest {
     @Test
     @Description("Вход через ссылку 'Войти' на странице регистрации")
     public void testLoginFromRegistrationForm() {
-        driver.get("https://stellarburgers.nomoreparties.site/register");
+        driver.get(Endpoints.REGISTER_PAGE);
         RegistrationPage regPage = new RegistrationPage(driver);
         regPage.clickLoginLink();
 
@@ -110,7 +111,7 @@ public class LoginTest extends BaseTest {
     @Test
     @Description("Вход через ссылку 'Войти' на странице восстановления пароля")
     public void testLoginFromForgotPasswordForm() {
-        driver.get("https://stellarburgers.nomoreparties.site/forgot-password");
+        driver.get(Endpoints.FORGOT_PASSWORD_PAGE);
         ForgotPasswordPage forgotPage = new ForgotPasswordPage(driver);
         forgotPage.clickLoginLink();
 

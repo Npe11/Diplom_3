@@ -9,6 +9,7 @@ import pages.HomePage;
 import pages.LoginPage;
 import pages.ProfilePage;
 import clients.UserClient;
+import utils.Endpoints;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -33,7 +34,7 @@ public class LogoutTest extends BaseTest {
         Response response = userClient.createUser(courier);
         accessToken = response.jsonPath().getString("accessToken");
 
-        driver.get("https://stellarburgers.nomoreparties.site/login");
+        driver.get(Endpoints.LOGIN_PAGE);
         LoginPage loginPage = new LoginPage(driver);
         loginPage.enterEmail(email);
         loginPage.enterPassword(password);
@@ -66,7 +67,7 @@ public class LogoutTest extends BaseTest {
         String currentUrl = driver.getCurrentUrl();
 
         assertEquals("После выхода должна открыться страница логина",
-                "https://stellarburgers.nomoreparties.site/login", currentUrl);
+                Endpoints.LOGIN_PAGE, currentUrl);
         assertTrue("На странице логина должна быть отображена кнопка 'Войти'",
                 loginPage.isLoginButtonDisplayed());
     }

@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.Endpoints;
 
 import java.time.Duration;
 
@@ -45,6 +46,6 @@ public class ProfilePage {
     }
 
     public void waitUntilPageUrlLoads() {
-        wait.until(ExpectedConditions.urlToBe("https://stellarburgers.nomoreparties.site/account/profile"));
+        wait.until(ExpectedConditions.urlToBe(Endpoints.ACCOUNT_PROFILE));
     }
 }

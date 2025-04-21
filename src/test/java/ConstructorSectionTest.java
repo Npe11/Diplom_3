@@ -2,6 +2,7 @@ import io.qameta.allure.Description;
 import org.junit.Before;
 import org.junit.Test;
 import pages.HomePage;
+import utils.Endpoints;
 
 import static org.junit.Assert.assertTrue;
 
@@ -10,7 +11,7 @@ public class ConstructorSectionTest extends BaseTest {
 
     @Before
     public void testSetUp() {
-        driver.get("https://stellarburgers.nomoreparties.site/");
+        driver.get(Endpoints.MAIN_PAGE);
         home = new HomePage(driver);
     }
 
